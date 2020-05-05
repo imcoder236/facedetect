@@ -21,10 +21,11 @@ sta_dir = os.path.join(BASE_DIR,"static")
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'awc-s^6u2pa)+9oo4l2w1s8t37_z9vryv91!io87p5cu*=98j='
-
+#SECRET_KEY = 'awc-s^6u2pa)+9oo4l2w1s8t37_z9vryv91!io87p5cu*=98j='
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'awc-s^6u2pa)+9oo4l2w1s8t37_z9vryv91!io87p5cu*=98j=')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 ALLOWED_HOSTS = ['*']
