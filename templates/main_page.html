@@ -1,0 +1,214 @@
+{% load staticfiles %}
+{% if not request.session.id %}
+  <script>
+    window.location.replace("/");
+  </script>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    {% block customCSS %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="wrapper d-flex align-items-stretch">
+      {% if sidebar %}
+
+      {% else %}
+      <nav id="sidebar" style="min-height:670px;" class="active">
+        <h1><a href="{%url 'dashboard'%}" class="logo">MN</a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="{%url 'dashboard'%}"><span class="fa fa-th-large"></span>Dashboard</a>
+          </li>
+          <li>
+              <a href="{%url 'facial_database'%}"><span class="	fa fa-database"></span>facial Database</a>
+          </li>
+          <li>
+            <a href="{%url 'track'%}"><span class="fa fa-user-secret"></span>Track face</span></a>
+          </li>
+          <li>
+            <a href="{%url 'report'%}"><span class="	fa fa-line-chart"></span>Report</a>
+          </li>
+          <li>
+            <a href="{%url 'settings'%}"><span class="" style="font-size:30px;font-family:serif;" ><b>IP</b></span>IP Address</a>
+          </li>
+          <li>
+            <a href="{%url 'logout'%}"><span class="fa fa-sign-out"></span> Logout</a>
+          </li>
+        </ul>
+        <div class="footer">
+          <p>
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This is made<i class="icon-heart" aria-hidden="true"></i> by Mahesh Mudaliyar & Naveen Kumhar</a>
+          </p>
+        </div>
+      </nav>
+      {% endif %}
+      <div id="content-main" style="padding:20px;width:100%;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);">
+          <div class="container-fluid">
+            {% if sidebar %}
+
+              <a href="{%url 'logout'%}" data-toggle="tooltip" title="Logout" id="logout" class="btn btn-primary">
+                <i class="fa fa-sign-out"></i>
+                <span class="sr-only">Logout</span></a>
+            {% else %}
+              <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                <i class="fa fa-bars"></i>
+                <span class="sr-only">Toggle Menu</span>
+              </button>
+            {% endif %}
+
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto pull-right">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#Profile" data-toggle="modal" data-tooltip="true" title="Edit Profiler" data-target="#updateprofile"><span class="fa fa-user-circle-o"> </span>&nbsp;&nbsp;{{ request.session.name }} {{ request.session.surname }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      <div class="container">
+        {% block body_block %}
+
+        {% endblock %}
+        {% if request.user_agent.is_mobile %}
+          <!-- <h1>mahesh</h1> -->
+        {% endif %}
+      </div>
+
+      <div class="modal fade" id="updateprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="margin-top:8%;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="profdiv">
+                <form target="_blank" method = "POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <p><input type="text" class="form-control" style="display:none" placeholder="Username" name="uid" value="{{ request.session.id }}"></p>
+                  <p><input type="text" class="form-control" placeholder="Username" name="uname" value="{{ request.session.username }}" disabled></p>
+                  <p><input type="text" class="form-control" placeholder="Name" name="name" value="{{ request.session.name }}"></p>
+                  <p><input type="text" class="form-control" placeholder="Email Id" name="uemail" value="{{ request.session.email }}"></p>
+                  <center><button type="submit" class="btn btn-primary" name="button">Submit</button></center>
+                </form>
+              </div>
+              <a id="chngpass" href="#ChangePassword">Change Password</a>
+              <div id="passdiv" style="display:none;">
+                <form target="_blank" method = "POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                  <p>
+                    <div class="input-group">
+                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="Current Password" name="cupass" required>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                      </span>
+                    </div>
+                  </p>
+                  <p>
+                    <div class="input-group">
+                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="New Password" id="newpass" name="newpass" required>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                      </span>
+                    </div>
+                  </p>
+                  <p>
+                    <div id="confdiv" class="input-group">
+                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="Confirm Password" id="confpass" name="confpass" required>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                      </span>
+                    </div>
+                  </p>
+                  <center><button type="submit" class="btn btn-primary" name="button">Submit</button></center>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script>
+      $(document).ready(function(){
+        if(window.matchMedia("(max-width: 767px)").matches){
+          $("#sidebar").removeClass("active");
+        } else{
+
+        }
+      });
+    </script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}" ></script>
+    {% block customJS %}
+
+    {% endblock %}
+    <script>
+      $('#input-group').keyup(function(){
+        if($("#confdiv").val() != $('#newpass').val().substr(0,$("#confpass").val().length)){
+          alert('confirm password not match');
+        }
+      });
+      function noBack()
+       {
+           window.history.forward()
+       }
+      noBack();
+      $("#chngpass").click(function(){
+        $("#profdiv").hide();
+        $("#chngpass").hide();
+        $("#passdiv").show();
+      });
+      window.onload = noBack;
+      window.onpageshow = function(evt) { if (evt.persisted) noBack() }
+      window.onunload = function() { void (0) }
+      $(document).ready(function(){
+        function checkPasswordMatch() {
+          var password = $("#newpass").val();
+          var confirmPassword = $("#confpass").val();
+          if (password != confirmPassword){
+            //$("#confpass").css('border-color','red');
+            alert("mahesh");
+          }
+        }
+        $("#confpass").keyup(checkPasswordMatch);
+        var divheight=$("#content-main").height();
+        var cal= $(".container").height()+108-$("#sidebar").height();
+        if (cal > 0){
+          $('#sidebar').css("height", $("#sidebar").height()+cal);
+        }
+        if(window.matchMedia("(max-width: 767px)").matches){
+          $("#sidebar").removeClass("active");
+        } else{
+
+        }
+      });
+      $(".reveal").on('click',function() {
+          var $pwd = $(".pwd");
+          if ($pwd.attr('type') === 'password') {
+              $pwd.attr('type', 'text');
+          } else {
+              $pwd.attr('type', 'password');
+          }
+      });
+
+    </script>
+  </body>
+</html>

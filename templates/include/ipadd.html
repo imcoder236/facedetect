@@ -1,0 +1,4 @@
+
+{% for rip in retrive_ip %}
+<option value="http://{{rip.ip}}:{{rip.port}}/{{rip.strs}}">{{rip.ip}}</option>
+{% endfor %}

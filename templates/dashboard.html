@@ -1,0 +1,420 @@
+  {% extends "main_page.html" %}
+  {% load staticfiles %}
+  {% block customCSS %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
+    <style media="screen">
+      table{
+        width:100%;
+      }
+    </style>
+  {% endblock %}
+  {% block body_block %}
+  <div class="">
+    <div class="row  row-cols-4 row-cols-2">
+      <div class="col-lg-3 col-sm-6">
+        <a href="#" data-toggle="modal" data-target="#exampleModal">
+          <div class="card" style="background-color:black;margin-bottom:10px; box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);">
+            <img class="card-img-top img-thumbnail"style="height:120px;" src="{% static '/images/add_photo.jpg' %}" alt="Card image cap"/>
+            <div style="padding:10px;">
+              <span style="">Add Face</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <a href="#" data-toggle="modal" data-target="#photo_detect_Modal">
+          <div class="card" style="background-color:black;margin-bottom:10px; box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);">
+            <img class="card-img-top img-thumbnail" style="height:120px;" src="{% static "/images/photo.jpeg" %}"  alt="Card image cap">
+            <div style="padding:10px;">
+              <span class="">Facial Detection (Photo)</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <a href="#" data-toggle="modal" data-target="#video_detect_Modal">
+          <div class="card" style="background-color:black;margin-bottom:10px; box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);">
+            <img class="card-img-top img-thumbnail" style="height:120px;" src="{% static "/images/video.jpg" %}" alt="Card image cap">
+            <div style="padding:10px;">
+              <span class="">Facial Detection (Video)</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <a href="{%url 'track'%}">
+          <div class="card" style="background-color:black;margin-bottom:10px; box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);">
+            <img class="card-img-top img-thumbnail" style="height:120px;" src="{% static "/images/live.jpg" %}" alt="Card image cap">
+            <div style="padding:10px;">
+              <span class="">Facial Detection (Live)</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="col-sm-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                <!-- <table style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td nowrap><center><img src="{% static '/images/face.png' %}" width="15px;" /></center></td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;Total Faces</td>
+                      <td>:</td>
+                      <td nowrap style="width:15%">&nbsp;&nbsp;&nbsp;&nbsp;{{ face_count }}</td>
+                      <td nowrap><center><sup><span class="fa fa-wifi" style="transform: rotate(-20deg);" aria-hidden="true"></span></sup><span class="fa fa-video-camera" aria-hidden="true"></span></center></td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;Total Camera IP</td>
+                      <td>:</td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;{{ count_cam }}</td>
+                    </tr>
+                    <tr>
+                      <td nowrap><center><span class="fa fa-database" aria-hidden="true"></span></center></td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;Total Records</td>
+                      <td>:</td>
+                      <td nowrap style="width:15%">&nbsp;&nbsp;&nbsp;&nbsp;{{ count_rec }}</td>
+                      <td nowrap><center><span class="fa fa-map-marker" aria-hidden="true"></span></center></td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;Total Area</td>
+                      <td>:</td>
+                      <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;{{ count_area }}</td>
+                    </tr>
+                  </tbody>
+                </table> -->
+                <div class="row" style="padding-right:15px;">
+                  <div class="col-sm-6" style="padding-left:10px; padding-right:0px; padding-top:5px; padding-bottom:5px;">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td nowrap style="width: 40px;"><center><img src="{% static '/images/face.png' %}" width="15px" /></center></td>
+                          <td nowrap>Total Faces</td>
+                          <td class="pull-right" nowrap>: &nbsp;&nbsp;&nbsp;&nbsp;{{ face_count }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-sm-6" style="padding-left:10px; padding-right:0px; padding-top:5px; padding-bottom:5px; ">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td nowrap style="width: 40px;"><center><sup><span class="fa fa-wifi" style="transform: rotate(-20deg);" aria-hidden="true"></span></sup><span class="fa fa-video-camera" aria-hidden="true"></span></center></td>
+                          <td nowrap>Total Camera IP</td>
+                          <td class="pull-right">: &nbsp;&nbsp;&nbsp;&nbsp;{{ count_cam }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-sm-6" style="padding-left:10px; padding-right:0px; padding-top:5px; padding-bottom:5px;">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td nowrap style="width: 40px;"><center><span class="fa fa-database" aria-hidden="true"></span></center></td>
+                          <td nowrap>Total Records</td>
+                          <td nowrap class="pull-right">: &nbsp;&nbsp;&nbsp;&nbsp;{{ count_rec }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-sm-6" style="padding-left:10px; padding-right:0px; padding-top:5px; padding-bottom:5px; ">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td nowrap style="width: 40px;"><center><span class="fa fa-map-marker" aria-hidden="true"></span></center></td>
+                          <td nowrap>Total Area</td>
+                          <td nowrap class="pull-right">: &nbsp;&nbsp;&nbsp;&nbsp;{{ count_area }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+            <h6 class="box-title">IP Status</h6>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div style="scrollbar-width:thin;overflow-y:scroll;height:212px" id="" >
+                <table class="table table-bordered table-striped table-hover responsive" >
+                  <tbody id="ip_rec_tbl">
+                  </tbody>
+                </table>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-7">
+        <div class="box box-primary" style="height:386px;">
+          <div class="box-header with-border">
+            <h6 class="box-title">Live Record Status</h6>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <!-- <table class="table table-bordered table-striped table-hover responsive table-responsive" style="">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Area</th>
+                  <th>IP</th>
+                  <th>DateTime</th>
+                </tr>
+              </thead>
+            </table> -->
+            <div style="scrollbar-width:thin;overflow-y:scroll;height:320px; width:100%" id="parentDiv" >
+              <table class="table table-bordered table-striped table-hover responsive " >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>IP</th>
+                    <th>DateTime</th>
+                  </tr>
+                </thead>
+                <tbody id="rec_tbl">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="photo_detect_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top:8%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Face Detect Photo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 style="">Face Detect Photo</h4>
+          <form target="_blank" method = "POST" action="{% url 'photo_detect' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="load_img" class="form-control" id="load_img" required /><br>
+            <button target="_blank" class="btn btn-primary" type="submit">Detect</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="video_detect_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top:8%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Face Detect Video</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 style="">Face Detect Video</h4>
+          <form target="_blank" method = "POST" action="{% url 'video_detect' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="load_video" class="form-control" id="load_video" required /><br>
+            <button target="_blank" class="btn btn-primary" type="submit">Detect</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:150px;" role="document" style="margin-top:8%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Face</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 style="">Add Photo</h4>
+          <form target="_blank" method = "POST" action="{% url 'image_upload' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputEmail1">Name</label>
+              <input type="test" class="form-control" id="id_name" name="id_name" placeholder="Name">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Picture</label>
+              <input type="file" class="form-control" id="id_picture" name="id_picture" >
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+          <hr>
+          <form class="" action="{% url 'webcam' %}" method="post">{% csrf_token %}
+            <h4 style="">Using Webcam</h4>
+            <button type="button" data-toggle="modal" class="btn btn-primary" data-dismiss="modal" data-target="#webcam1" id="b_webcam" onclick="startup()">Webcam</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="webcam1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="margin-top:8%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Face</h5>
+          <button type="button" class="close" data-dismiss="modal" onclick="location.reload();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="camera">
+            <center>
+              <p><input type="text" class="form-control person_name" style="max-width:200px;" placeholder="Name" id="person_name" required value=""></p>
+              <p> <video id="video">Video stream not available.</video></p>
+              <button id="startbutton" onclick="takepicture()"  class="btn btn-primary">Capture</button>
+            </center>
+          </div>
+          <hr>
+          <center>
+            <form class="" action="{% url 'web_upload' %}" method="post">  {% csrf_token %}
+              <div class="">
+                <canvas id="canvas" style="display:none;">
+                </canvas>
+              </div>
+            </form>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if video_err_msg %}
+    <script type="text/javascript">
+    alert('{{ video_err_msg }}');
+    window.close();
+    </script>
+  {% endif %}
+  <script type="text/javascript">
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var photo = document.getElementById('photo');
+    var startbutton =document.getElementById('startbutton');
+    var width = 200;
+    var height = 0;
+    var streaming = false;
+    function startup() {
+      navigator.mediaDevices.getUserMedia({video: true, audio: false})
+      .then(function(stream) {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(function(err) {
+        console.log("An error occurred: " + err);
+      });
+      video.addEventListener('canplay', function(ev){
+        if (!streaming) {
+          height = video.videoHeight / (video.videoWidth/width);
+          if (isNaN(height)) {
+            height = width / (4/3);
+          }
+          video.setAttribute('width', width);
+          video.setAttribute('height', height);
+          canvas.setAttribute('width', width);
+          canvas.setAttribute('height', height);
+          streaming = true;
+        }
+      }, false);
+    }
+    function clearphoto() {
+      var context = canvas.getContext('2d');
+      context.fillStyle = "#AAA";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      var data = canvas.toDataURL('image/png');
+      photo.setAttribute('src', data);
+    }
+    var data
+    function takepicture() {
+      var context = canvas.getContext('2d');
+      if (width && height) {
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(video, 0, 0, width, height);
+        data = canvas.toDataURL('image/jpeg');
+        photo.setAttribute('src', data);
+        $.ajax({                       // initialize an AJAX request
+          url: '{% url "web_image_upload" %}',                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+          data: {
+            'name1': $('#person_name').val() ,      // add the country id to the GET parameters
+            'person_img': data
+          },
+          success: function (data) {   // `data` is the return of the `load_cities` view function
+            alert(data);
+          }
+        });
+
+      } else {
+        clearphoto();
+      }
+    }
+    </script>
+  {% endblock %}
+  {% block customJS %}
+    <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script>
+    window.onload = function () {
+
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title:{
+          text: "",
+          horizontalAlign: "left"
+        },
+        data: [{
+          type: "doughnut",
+          startAngle: 60,
+          innerRadius: 40,
+          indexLabelFontSize: 17,
+          indexLabel: "{label} - #percent",
+          toolTipContent: "<b>{label}:</b> (#percent)",
+          dataPoints: [
+            { y: 67, label: "Inbox" },
+            { y: 28, label: "Archives" },
+            { y: 10, label: "Labels" },
+            { y: 6, label: "Spam"}
+          ]
+        }]
+      });
+      chart.render();
+
+      $('.canvasjs-chart-credit').hide();
+      var objDiv = document.getElementById("parentDiv");
+      objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    </script>
+    <script>
+    $(function () {
+      setInterval(function(){
+        $.ajax({
+          url: '{% url "record_table" %}',
+          success: function (data) {
+            $("#rec_tbl").html(data);
+          }
+        });
+      }, 2000);
+    });
+    </script>
+    <script type="text/javascript">
+      // $('.table').addClass("table-responsive");
+      // $('.table').css("width","100%");
+    </script>
+  {% endblock %}

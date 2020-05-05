@@ -1,0 +1,98 @@
+{% extends "main_page.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block customCSS %}
+  <link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
+  <style>
+    #example1_previous{
+      margin-right:5px;
+    }
+    #example1_next{
+      margin-left:5px;
+    }
+  </style>
+{% endblock %}
+{% block body_block %}
+  <div class="box">
+    <div class="box-body">
+      <table id="example1" class="table table-bordered table-striped table-hover responsive">
+        <thead>
+          <tr>
+            <th><center>ID</center></th>
+            <th nowrap><center>Name</center></th>
+            <th><center>Area</center></th>
+            <th><center>IP</center></th>
+            <th nowrap><center>Date Time</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in retrive_track_record%}
+                <tr>
+                  <td nowrap><center>{{r.id}}</center></td>
+                  <td nowrap><center><a href="" id="" class="editable">{{r.name}}</a></center></td>
+                  <td>
+                    <center>
+                      <a href="#" id="">{{r.area}}</a>
+                    </center>
+                  </td>
+                  <td nowrap data-tooltip="true" title="Double click to edit">
+                    <center><a>{{r.ip}}</a></center>
+                  </td>
+                  <td nowrap data-tooltip="true" title="Click to view">
+                    <center>
+                      <a href="#" id="">{{r.date_time}}</a>
+                    </center>
+                  </td>
+                </tr>
+           {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+{% block customJS %}
+  <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script>
+  $(function () {
+    $('#example1').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+
+    var div = $('<div class="btn-group" style="margin-left:5px;"></div>');
+    // div.html('<div class="dp form-check"><button type="button" class="btn dropdown-toggle" ><i class="fa fa-columns"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="height:150px; overflow-y:scroll;scrollbar-width:thin;left:-70px;"><li><label><input type="checkbox" class="hidecol" value="name" id="col_2" checked />&nbsp;Asset Name</label></li><li><label><input type="checkbox" class="hidecol" value="image" id="col_3" checked />&nbsp;Image</label></li><li><label><input type="checkbox" class="hidecol" value="asset_tag" id="col_4" checked />&nbsp;Asset Tag</label></li><li><label><input type="checkbox" class="hidecol" value="serial" id="col_5" checked />&nbsp;Serial</label></li><li><label><input type="checkbox" class="hidecol" value="model_id" id="col_6" checked="checked" />&nbsp;Model&nbsp;</label></li><li><label><input type="checkbox" class="hidecol" value="category_id" id="col_7" checked />&nbsp;Category</label></li><li><label><input type="checkbox" class="hidecol" value="status_id" id="col_8" checked />&nbsp;Status</label></li><li><label><input type="checkbox" class="hidecol" value="checkout_counter" id="col_9"  />&nbsp;Checked Out To</label></li><li><label><input type="checkbox" class="hidecol" value="location_id" id="col_10" checked />&nbsp;Location</label></li><li><label><input type="checkbox" class="hidecol" value="purchase_cost" id="col_11" checked="checked" />&nbsp;Purchase &nbsp;</label></li></ul></div><div class="dp" style="margin-left:px;">&nbsp;<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="left:-70px;"><li><a href="#">Excel</a></li><li><a href="#">PDF</a></li></ul></div>');
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+    $('#example1_info').addClass("pull-left");
+    $('#example1_length select').addClass("form-control");
+    $('#example1_filter input').addClass("form-control");
+    $('#example1_paginate').addClass("pull-right");
+    $('#example1_length').addClass("pull-left");
+    $('.ml-auto').addClass("pull-right");
+    $('#example1_filter').keyup(function() {
+      $('#example1_previous').addClass("btn btn-default");
+      $('#example1_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+    $('#nav').attr('id', $(this).text());
+    $("select[name=example1_length]").change(function(){
+      $('#example1_previous').addClass("btn btn-default");
+      $('#example1_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+  });
+  $(document).on("click", ".paginate_button", function(){
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+  });
+  </script>
+{% endblock %}

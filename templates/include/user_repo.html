@@ -1,0 +1,19 @@
+{% for p in user_report %}
+<tr>
+  <td nowrap><center></center></td>
+  <td nowrap><center><a href="" id="" class="editable">{{p.0}}</a></center></td>
+  <td>
+    <center>
+      <a href="#" id="">{{p.1}}</a>
+    </center>
+  </td>
+  <td nowrap data-tooltip="true" title="Double click to edit">
+    <center><a>{{p.2}}</a></center>
+  </td>
+  <td nowrap data-tooltip="true" title="Click to view">
+    <center>
+      <a href="#" id="">{{p.3}}</a>
+    </center>
+  </td>
+</tr>
+{% endfor %}

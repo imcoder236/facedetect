@@ -1,0 +1,35 @@
+{% for r in user_detail %}
+<tr>
+  <td><center>{{r.id}}</center></td>
+  <td><center><a href="" id="" class="editable">{{r.first_name}}</a></center></td>
+  <td>
+    <center>
+      <a href="#" id="">{{r.email}}</a>
+    </center>
+  </td>
+  <td data-tooltip="true" title="Double click to edit">
+    <center><a>{{r.date_joined}}</a></center>
+  </td>
+  <td data-tooltip="true" title="Click to view">
+    <center>
+      <a href="#" id="">{{r.creat_time}}</a>
+    </center>
+  </td>
+  <!-- <td data-tooltip="true" title="Click to view">
+    <center>
+      <a href="#" id="">{{r.status}}</a>
+    </center>
+  </td> -->
+  <td>
+    <form class="" action="" method="post">
+
+      {% if r.is_active == 1 %}
+        <a href="{% url 'disable_user' pid=r.id %}" style="margin-right:5px;" class="btn btn-danger btn-sm float-right">Deactivate</a>
+      {% else %}
+        <a href="{% url 'enable_user' eid=r.id %}" style="margin-right:5px;" class="btn btn-success btn-sm float-right">&nbsp;&nbsp;Activate&nbsp;&nbsp;</a>
+      {% endif %}
+    </form>
+
+  </td>
+</tr>
+{% endfor %}

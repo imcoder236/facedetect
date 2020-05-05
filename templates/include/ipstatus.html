@@ -1,0 +1,20 @@
+{% for ip in ip_add %}
+<tr>
+  <td>{{ip.area}}</td>
+  <td>{{ip.ip}}</td>
+  <td>
+    <center>
+      {% if not ip.status %}
+          <span style="height:8px;width: 8px;background-color: red;border-radius: 50%;display: inline-block;"></span>
+      {% else %}
+          <span style="height:8px;width: 8px;background-color: green;border-radius: 50%;display: inline-block;"></span>
+      {% endif %}
+    </center>
+  </td>
+</tr>
+{% endfor %}
+{% if not ip_add %}
+<center>
+  <h6>No records Found</h6>
+</center>
+{% endif %}

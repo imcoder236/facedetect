@@ -1,0 +1,387 @@
+{% extends "main_page.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block customCSS %}
+  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+  <link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
+  <style>
+    #example1_previous{
+      margin-right:5px;
+    }
+    #example1_next{
+      margin-left:5px;
+    }
+    input[name="example1_length"]{
+      height:34px;
+    }
+  </style>
+{% endblock %}
+{% block body_block %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Users</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">User Report</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Password Changed</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <div class="box">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-3">
+            <h4>Users <small>(Total User: {{user_count}})</small></h4>
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-1">
+            <button type="button" style="height:37px;" class="input-group-text fa fa-plus pull-right" data-tooltip="true" title="Add User" data-toggle="modal" data-target="#exampleModal" name="sbutton"></button>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped table-hover responsive">
+          <thead>
+            <tr>
+              <th><center>ID</center></th>
+              <th nowrap><center>Name</center></th>
+              <th><center>Email</center></th>
+              <th nowrap><center>Join Date</center></th>
+              <th nowrap><center>Last Login</center></th>
+              <th nowrap><center>Action</center></th>
+            </tr>
+          </thead>
+          <tbody id="rec_tbl">
+            {% for r in user_detail %}
+            <tr>
+              <td><center>{{r.id}}</center></td>
+              <td><center>{{r.first_name}}</center></td>
+              <td>
+                <center>
+                  {{r.email}}
+                </center>
+              </td>
+              <td data-tooltip="true" title="Double click to edit">
+                <center>{{r.date_joined}}</center>
+              </td>
+              <td data-tooltip="true" title="Click to view">
+                <center>
+                  {{r.last_login}}
+                </center>
+              </td>
+              <td>
+                <form class="" action="" method="post">
+
+                  {% if r.is_active == 1 %}
+                    <a href="{% url 'disable_user' pid=r.id %}" style="margin-right:5px;" class="btn btn-danger btn-sm float-right">Deactivate</a>
+                  {% else %}
+                    <a href="{% url 'enable_user' eid=r.id %}" style="margin-right:5px;" class="btn btn-success btn-sm float-right">&nbsp;&nbsp;Activate&nbsp;&nbsp;</a>
+                  {% endif %}
+                </form>
+
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <div class="box">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-3">
+            <h4>User Reports</h4>
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-1">
+            <button type="button" style="height:37px;" class="input-group-text fa fa-plus pull-right" data-tooltip="true" title="Add User" data-toggle="modal" data-target="#exampleModal" name="sbutton"></button>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <table id="example2" class="table table-bordered table-striped table-hover responsive">
+          <thead>
+            <tr>
+              <th><center>ID</center></th>
+              <th nowrap><center>Name</center></th>
+              <th><center>Email</center></th>
+              <th><center>In Time</center></th>
+              <th nowrap><center>Out Time</center></th>
+            </tr>
+          </thead>
+          <tbody id="rec_tb2">
+            {% for p in user_report %}
+            <tr>
+              <td nowrap><center></center></td>
+              <td nowrap><center>{{p.0}}</center></td>
+              <td>
+                <center>
+                  {{p.1}}
+                </center>
+              </td>
+              <td nowrap data-tooltip="true" title="Double click to edit">
+                <center>{{p.2}}</center>
+              </td>
+              <td nowrap data-tooltip="true" title="Click to view">
+                <center>
+                  {{p.3}}
+                </center>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+    <div class="box">
+      <div class="box-header">
+      <div class="row">
+        <div class="col-12">
+          <h4>Password Changed</h4>
+        </div>
+      </div>
+      </div>
+      <div class="box-body">
+        <table id="example3" class="table table-bordered table-striped table-hover responsive">
+          <thead>
+            <tr>
+              <th><center>ID</center></th>
+              <th nowrap><center>Username</center></th>
+              <th><center>Email</center></th>
+              <th><center>Date</center></th>
+            </tr>
+          </thead>
+          <tbody id="rec_tb2">
+            {% for c in change_pass %}
+            <tr>
+              <td nowrap><center>{{c.id}}</center></td>
+              <td nowrap><center>{{c.username}}</center></td>
+              <td>
+                <center>
+                  {{c.umail}}
+                </center>
+              </td>
+              <td nowrap data-tooltip="true" title="Double click to edit">
+                <center>{{c.date}}</center>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="margin-top:8%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form target="_blank" method = "POST" action="{% url 'adduser' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputEmail1">Username</label>
+              <input type="test" class="form-control" id="id_user" name="id_user" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">name</label>
+              <input type="test" class="form-control" id="id_name" name="uname" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email Id</label>
+              <input type="email" class="form-control" id="id_name" name="umail" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Password</label>
+              <input type="password" class="form-control" id="id_name" name="upass" placeholder="Password" required>
+            </div>
+            <center><button type="submit" class="btn btn-primary">Add</button></center>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block customJS %}
+<!-- <script src="{% static 'js/adminlte.min.js' %}"></script> -->
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<!-- <script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script> -->
+<script>
+  $(function () {
+    //  $('#example1').DataTable()
+
+
+    $('#example1').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+
+    var div = $('<div class="btn-group" style="margin-left:5px;"></div>');
+    // div.html('<div class="dp form-check"><button type="button" class="btn dropdown-toggle" ><i class="fa fa-columns"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="height:150px; overflow-y:scroll;scrollbar-width:thin;left:-70px;"><li><label><input type="checkbox" class="hidecol" value="name" id="col_2" checked />&nbsp;Asset Name</label></li><li><label><input type="checkbox" class="hidecol" value="image" id="col_3" checked />&nbsp;Image</label></li><li><label><input type="checkbox" class="hidecol" value="asset_tag" id="col_4" checked />&nbsp;Asset Tag</label></li><li><label><input type="checkbox" class="hidecol" value="serial" id="col_5" checked />&nbsp;Serial</label></li><li><label><input type="checkbox" class="hidecol" value="model_id" id="col_6" checked="checked" />&nbsp;Model&nbsp;</label></li><li><label><input type="checkbox" class="hidecol" value="category_id" id="col_7" checked />&nbsp;Category</label></li><li><label><input type="checkbox" class="hidecol" value="status_id" id="col_8" checked />&nbsp;Status</label></li><li><label><input type="checkbox" class="hidecol" value="checkout_counter" id="col_9"  />&nbsp;Checked Out To</label></li><li><label><input type="checkbox" class="hidecol" value="location_id" id="col_10" checked />&nbsp;Location</label></li><li><label><input type="checkbox" class="hidecol" value="purchase_cost" id="col_11" checked="checked" />&nbsp;Purchase &nbsp;</label></li></ul></div><div class="dp" style="margin-left:px;">&nbsp;<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="left:-70px;"><li><a href="#">Excel</a></li><li><a href="#">PDF</a></li></ul></div>');
+    // $("#example1_filter").append(div);
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+    $('#example1_info').addClass("pull-left");
+    $('#example1_length select').addClass("form-control");
+    $('#example1_filter input').addClass("form-control");
+    $('#example1_paginate').addClass("pull-right");
+    $('#example1_length').addClass("pull-left");
+    $('#example1').addClass("table-responsive");
+    $('.ml-auto').addClass("pull-right");
+    $('#example1_filter').keyup(function() {
+      $('#example1_previous').addClass("btn btn-default");
+      $('#example1_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+
+    });
+    $('#nav').attr('id', $(this).text());
+    // $('.example1_wrapper').click(function(){
+    //         alert("dfs");
+    // });​
+    // $('#dataTables_length select').change((function() {
+    //     alert("dfs");
+    // //   $('#example1_previous').addClass("btn btn-default");
+    // //   $('#example1_next').addClass("btn btn-default");
+    // });
+    // $('#dataTables_length select').click(function(){
+    //
+    //         alert("dfs");
+    // });​
+    // alert($('#example1_length select').get());
+    $("select[name=example1_length]").change(function(){
+      $('#example1_previous').addClass("btn btn-default");
+      $('#example1_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+    // $(".paginate_button").on("click", function(event) {
+    //   $('#example1_previous').addClass("btn btn-default");
+    //   $('#example1_next').addClass("btn btn-default");
+    //   $('.paginate_button').addClass("btn btn-default");
+    // });
+  });
+  $(document).on("click", ".paginate_button", function(){
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+  });
+  $(function () {
+    $('input[name="example1_length"]').css("height","30px");
+  });
+</script>
+<script>
+  $(function () {
+    //  $('#example1').DataTable()
+    // $('#sidebar').hide();
+    // $('#sidebarCollapse').hide();
+
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+
+    $('#example2_previous').addClass("btn btn-default");
+    $('#example2_next').addClass("btn btn-default");
+
+    var div = $('<div class="btn-group" style="margin-left:5px;"></div>');
+    // div.html('<div class="dp form-check"><button type="button" class="btn dropdown-toggle" ><i class="fa fa-columns"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="height:150px; overflow-y:scroll;scrollbar-width:thin;left:-70px;"><li><label><input type="checkbox" class="hidecol" value="name" id="col_2" checked />&nbsp;Asset Name</label></li><li><label><input type="checkbox" class="hidecol" value="image" id="col_3" checked />&nbsp;Image</label></li><li><label><input type="checkbox" class="hidecol" value="asset_tag" id="col_4" checked />&nbsp;Asset Tag</label></li><li><label><input type="checkbox" class="hidecol" value="serial" id="col_5" checked />&nbsp;Serial</label></li><li><label><input type="checkbox" class="hidecol" value="model_id" id="col_6" checked="checked" />&nbsp;Model&nbsp;</label></li><li><label><input type="checkbox" class="hidecol" value="category_id" id="col_7" checked />&nbsp;Category</label></li><li><label><input type="checkbox" class="hidecol" value="status_id" id="col_8" checked />&nbsp;Status</label></li><li><label><input type="checkbox" class="hidecol" value="checkout_counter" id="col_9"  />&nbsp;Checked Out To</label></li><li><label><input type="checkbox" class="hidecol" value="location_id" id="col_10" checked />&nbsp;Location</label></li><li><label><input type="checkbox" class="hidecol" value="purchase_cost" id="col_11" checked="checked" />&nbsp;Purchase &nbsp;</label></li></ul></div><div class="dp" style="margin-left:px;">&nbsp;<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="left:-70px;"><li><a href="#">Excel</a></li><li><a href="#">PDF</a></li></ul></div>');
+    // $("#example1_filter").append(div);
+    $('#example2_previous').addClass("btn btn-default");
+    $('#example2_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+    $('#example2_info').addClass("pull-left");
+    $('#example2_length select').addClass("form-control");
+    $('#example2_filter input').addClass("form-control");
+    $('#example2_paginate').addClass("pull-right");
+    $('#example2_length').addClass("pull-left");
+    $('#example2').addClass("table-responsive");
+    $('.ml-auto').addClass("pull-right");
+    $('#example2_filter').keyup(function() {
+      $('#example2_previous').addClass("btn btn-default");
+      $('#example2_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+
+    });
+    $('#nav').attr('id', $(this).text());
+    $("select[name=example2_length]").change(function(){
+      $('#example2_previous').addClass("btn btn-default");
+      $('#example2_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+    $(".sorting, .sorting_desc, .sorting_asc, select[name=example1_length] ").click(function(){
+      $('#example2_previous').addClass("btn btn-default");
+      $('#example2_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+  });
+  $(document).on("click", ".paginate_button", function(){
+    $('#example2_previous').addClass("btn btn-default");
+    $('#example2_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+  });
+  $(function () {
+    $('input[name="example2_length"]').css("height","30px");
+  });
+</script>
+<script type="text/javascript">
+  $(function () {
+    //setInterval(function(){
+      // $.ajax({
+      //   url: '{% url "users_data" %}',
+      //   success: function (data) {
+      //     $("#rec_tbl").html(data);
+      //   }
+      // });
+    //}, 1000);
+    // setInterval(function(){
+    //   $.ajax({
+    //     url: '{% url "users_repo" %}',
+    //     success: function (data) {
+    //       $("#rec_tb2").html(data);
+    //     }
+    //   });
+    // }, 10000);
+  });
+</script>
+
+{% endblock %}

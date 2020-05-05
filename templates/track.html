@@ -1,0 +1,106 @@
+{% extends "main_page.html" %}
+{% load staticfiles %}
+{% block customCSS %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block body_block %}
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-4">
+          Select Name:
+        </div>
+        <div class="col-sm-8">
+          <select class="js-example-basic-single form-control">
+            <option value="">Select</option>
+            {% for rname in retrive_name %}
+            <option value="{{rname.name}}">{{rname.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-4">
+          Select Area:
+        </div>
+        <div class="col-sm-8">
+          <form id="areaform" method="post" data-cities-url="{% url 'load_ip' %}">{% csrf_token %}
+            <select class="js-example-basic-single form-control" id="area1" name="area1" >
+              <option value="">Select</option>
+              {% for rarea in retrive_area %}
+              <option value="{{rarea.area}}">{{rarea.area}}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-4">
+          Select Camera No:
+        </div>
+        <div class="col-sm-8">
+          <form  method="post" id="cam_ip" action="{% url 'home1' %}" target="_blank">{% csrf_token %}
+            <select name="ip_address11" id="ip_address11" class="js-example-basic-single form-control">
+              <option value="">Select</option>
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> <br>
+  <button type="submit" form="cam_ip" class="btn btn-sm btn-primary">Submit</button>
+  <hr>
+  <form method="post" target="_blank" action="{% url 'home1' %}">
+    <p>Direct Ip Input</p>
+    {% csrf_token %}
+    <input name="ip_address11" class="form-control" placeholder="e.g. : 192.168.0.1" style="max-width:300px"/>
+    <br>
+    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+  </form>
+  </div>
+  {% if err_msg %}
+    <script type="text/javascript">
+      alert('{{ err_msg }}');
+      window.close();
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block customJS %}
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src="{% static 'js/select2.js' %}"></script>
+  <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript">
+      $('#example1').addClass("table-responsive");
+  </script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+    $('.select2-selection__arrow').css('top','5px');
+    $('.select2-selection').css('height','40px');
+    $('.select2-selection').css('padding-top','5px');
+    $('#sidebar').css('padding-top','15px');
+  });
+  </script>
+  <script>
+  $("#area1").change(function () {
+    var url = $("#areaform").attr("data-cities-url");
+    var areaid = $(this).val();
+    $.ajax({
+      url: '{% url "load_ip" %}',
+      data: {
+        'area1': areaid
+      },
+      success: function (data) {
+        $("#ip_address11").html(data);
+      }
+    });
+  });
+  </script>
+
+{% endblock %}

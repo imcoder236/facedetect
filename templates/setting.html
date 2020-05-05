@@ -1,0 +1,173 @@
+{% extends "main_page.html" %}
+{% load staticfiles %}
+{% block customCSS %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
+<style>
+  #example1_previous{
+    margin-right:5px;
+  }
+  #example1_next{
+    margin-left:5px;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+  <div class="container-fluid"><br>
+    <center>Add Area</center>
+    <hr class="" style="width:100%; margin:0; border:0.5px solid black; border-radius: 0.25px;"><br/>
+    <form action="" method="post" id="area_form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-sm-2">
+            <p style="padding-top:5px;" nowrap>Select Area :</p>
+        </div>
+        <div class="col-sm-3">
+          <input type="text" name="area" class="form-control" placeholder="Area"/>
+        </div>
+        <div class="col-sm-2">
+          <button type="Submit" name="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+    <br/>
+    <center>Ip address</center>
+    <hr class="" style="width:100%; margin:0; border:0.5px solid black; border-radius: 0.25px;"><br/>
+    <form action="" method="post" id="ip_form">
+      {% csrf_token %}
+      <div class="row" style="padding-left:1em;">
+        <div class="">
+          <p style="padding-top:5px;" nowrap>Select Area :</p>
+        </div>
+        <div class="col-sm-2">
+          <select name="cam_add" class="form-control">
+            <option value="">Select</option>
+            {% for rarea in retrive_area %}
+            <option value="{{rarea.area}}">{{rarea.area}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="" nowrap>
+          <p style="padding-top:5px;" nowrap>Ip Address :</p>
+        </div>
+        <div class="col-sm-2">
+          <input type="text" name="ip" class="form-control" placeholder="Ip Address"/><br>
+        </div>
+        <div class="col-sm-1">
+          <button type="Submit" name="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+    <div class="box">
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped table-hover responsive">
+          <thead>
+            <tr>
+              <th><center>ID</center></th>
+              <th><center>Area</center></th>
+              <th><center>IP</center></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in records%}
+              <tr>
+                <td nowrap><center>{{r.id}}</center></td>
+                <td>
+                  <center>
+                    <a href="#" id="">{{r.area}}</a>
+                  </center>
+                </td>
+                <td nowrap data-tooltip="true" title="Double click to edit">
+                  <center><a>{{r.ip}}</a></center>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $("form").submit(function(e) {
+        e.preventDefault();
+      });
+      $("form#area_form").submit(function() {
+          var area = $('input[name="area"]').val().trim();
+          if (area) {
+              $.ajax({
+                  url: '{% url "settings" %}',
+                  data: {
+                      'area': area,
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      if (data.user) {
+                        appendToUsrTable(data.user);
+                      }
+                  }
+              });
+          } else {
+              alert("All fields must have a valid value.");
+          }
+          $('form#add_user').trigger("reset");
+          return false;
+      });
+  </script>
+
+{% endblock %}
+
+{% block customJS %}
+
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script>
+  $(function () {
+    $('#example1').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+
+    var div = $('<div class="btn-group" style="margin-left:5px;"></div>');
+    // div.html('<div class="dp form-check"><button type="button" class="btn dropdown-toggle" ><i class="fa fa-columns"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="height:150px; overflow-y:scroll;scrollbar-width:thin;left:-70px;"><li><label><input type="checkbox" class="hidecol" value="name" id="col_2" checked />&nbsp;Asset Name</label></li><li><label><input type="checkbox" class="hidecol" value="image" id="col_3" checked />&nbsp;Image</label></li><li><label><input type="checkbox" class="hidecol" value="asset_tag" id="col_4" checked />&nbsp;Asset Tag</label></li><li><label><input type="checkbox" class="hidecol" value="serial" id="col_5" checked />&nbsp;Serial</label></li><li><label><input type="checkbox" class="hidecol" value="model_id" id="col_6" checked="checked" />&nbsp;Model&nbsp;</label></li><li><label><input type="checkbox" class="hidecol" value="category_id" id="col_7" checked />&nbsp;Category</label></li><li><label><input type="checkbox" class="hidecol" value="status_id" id="col_8" checked />&nbsp;Status</label></li><li><label><input type="checkbox" class="hidecol" value="checkout_counter" id="col_9"  />&nbsp;Checked Out To</label></li><li><label><input type="checkbox" class="hidecol" value="location_id" id="col_10" checked />&nbsp;Location</label></li><li><label><input type="checkbox" class="hidecol" value="purchase_cost" id="col_11" checked="checked" />&nbsp;Purchase &nbsp;</label></li></ul></div><div class="dp" style="margin-left:px;">&nbsp;<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download"></i>&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu dp-content" style="left:-70px;"><li><a href="#">Excel</a></li><li><a href="#">PDF</a></li></ul></div>');
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+    $('#example1_info').addClass("pull-left");
+    $('#example1_length select').addClass("form-control");
+    $('#example1_filter input').addClass("form-control");
+    $('#example1_paginate').addClass("pull-right");
+    $('#example1_length').addClass("pull-left");
+    $('#example1_length').css('height','34px');
+    $('.ml-auto').addClass("pull-right");//oye kya huaa naveeen tu gaya kaam se
+    $('#example1_filter').keyup(function() {
+      $('#example1_previous').addClass("btn btn-default");
+      $('#example1_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+    $(".sorting, .sorting_desc, .sorting_asc, select[name=example1_length] ").click(function(){
+      $('#example2_previous').addClass("btn btn-default");
+      $('#example2_next').addClass("btn btn-default");
+      $('.paginate_button').addClass("btn btn-default");
+    });
+    $('#nav').attr('id', $(this).text());
+    $(document).ready(function(){
+      if(window.matchMedia("(max-width: 767px)").matches){
+        $(".dataTables_filter").css("padding-top","50px");
+      }
+    });
+  });
+  $(document).on("click", ".paginate_button", function(){
+    $('#example1_previous').addClass("btn btn-default");
+    $('#example1_next').addClass("btn btn-default");
+    $('.paginate_button').addClass("btn btn-default");
+  });
+</script>
+{% endblock %}
