@@ -40,7 +40,6 @@ def email(request):
     userdetails = User.objects.filter(username=request.POST.get('Username'))[0]
     reset_email = userdetails.email
     uid = userdetails.id
-    # print()
     if reset1 == reset_email:
         random_pass=get_random_alphaNumeric_string(12)
         user_acc =User.objects.get(username=request.POST.get('Username'))
@@ -58,10 +57,6 @@ def email(request):
         change_passwd.save()
     else:
          return HttpResponse("<script>alert('Email ID mismatched. Enter correct email address to request new password'); windows.location.href('/');</script>")
-    #email.attach(mail, 'text/html')
-    # check_mail=email.send()
-    # if not check_mail:
-    #     return HttpResponse("<script>alert('Services Time Out. Try Again in Few minutes'); windows.location.href('/');</script>")
     return redirect('/')
 
 def success(request):
@@ -75,7 +70,6 @@ def users_data(request):
     return render(request,'include/user_data.html',{'user_detail':user_detail})
 
 def users_repo(request):
-    # user_report = users_report.objects.all()
     cursor = connection.cursor()
     cursor.execute("select auth_user.first_name,auth_user.email,face_app_users_report.in_time,face_app_users_report.out_time FROM auth_user INNER JOIN face_app_users_report on auth_user.id=face_app_users_report.user_id_id ")
     row = cursor.fetchall()
@@ -136,7 +130,6 @@ def adduser(request):
 def update_profile(request):
     uid = request.POST.get('uid')
     updatepro = User.objects.get(id=uid)
-    print(uid)
     upname = request.POST.get('name')
     upmail = request.POST.get('uemail')
     updatepro.first_name = upname
@@ -173,12 +166,9 @@ def ip_record_table(request):
 def facial_database(request):
     retrive_facial_db = uploadImage.objects.all()
     face_name = uploadImage.objects.all()
-    print(face_name)
     svalue = request.POST.get('f_search')
-    print(svalue)
     if svalue != '' and svalue is not None:
         retrive_facial_db = retrive_facial_db.filter(name = svalue)
-        print(retrive_facial_db)
     return render(request,"facial_db.html", { 'retrive_facial_db': retrive_facial_db , 'face_name': face_name})
 
 def track(request):
@@ -189,7 +179,6 @@ def track(request):
 def load_ip(request):
     retrive_ip = ip_address.objects.all()
     area11 = request.GET.get('area1')
-    print(area11)
     retrive_ip = retrive_ip.filter(area = area11)
     return render(request, 'include/ipadd.html', {'retrive_ip': retrive_ip})
 
@@ -246,7 +235,6 @@ def  user_login(request):
             return render(request,'index.html',{'fail':'false'})
     else:
         return render(request, 'index.html', {})
-
 
 def logout(request):
     users_report.objects.filter(id=request.session['user_login_id']).update(out_time= datetime.datetime.now())
@@ -362,99 +350,10 @@ def edit_pofile(request):
 def edit_photo(request):
     uid =  request.POST.get('edit_pic')
     u_image = request.FILES.get('eidt_pro')
-    print(u_image)
-    print(uid)
     u_profile = uploadImage.objects.get(id=uid)
     u_profile.picture = u_image
     u_profile.save()
     return redirect('c29aea40b84e04595f2fec3e5918530f71f31a7f/'+str(uid))
-# global vc
-# class camThread(threading.Thread):
-#     def __init__(self, previewName, camID):
-#         threading.Thread.__init__(self)
-#         self.previewName = previewName
-#         self.camID = camID
-#     def run(self):
-#         print("Starting " + self.previewName)
-#         camPreview(self.previewName, self.camID)
-#
-# def camPreview(previewName, camID):
-#     cv2.namedWindow(previewName)
-#     cam = cv2.VideoCapture(camID)
-#     if cam.isOpened():  # try to get the first frame
-#         rval, frame = cam.read()
-#     else:
-#         rval = False
-#     while rval:
-#         cv2.imshow(previewName, frame)
-#         rval, frame = cam.read()
-#         key = cv2.waitKey(20)
-#         if key == 27:  # exit on ESC
-#             break
-#     cv2.destroyWindow(previewName)
-#
-# def trace_face(request):
-#     vc=request.POST.get('ip_address11')
-#     if vc=='http://0:/':
-#         vc=0
-#     thread1 = camThread("Camera "+str(vc), vc)
-#     thread1.start()
-#     return HttpResponse('<script type="text/javascript">window.close()</script>')
-
-# def trace_face(request):
-#
-#     vc=request.POST.get('ip_address11')
-#     if vc=='http://0:/' or vc=='0':
-#         vc=0
-#     try:
-#         video_capture = cv2.VideoCapture(vc)
-#         images=[]
-#         encodings=[]
-#         names=[]
-#         files=[]
-#         prsn=uploadImage.objects.all()
-#         for p in prsn:
-#             images.append(p.name+'_image')
-#             encodings.append(p.name+'_face_encoding')
-#             files.append(p.picture)
-#             names.append(p.name)
-#
-#         for i in range(0,len(images)):
-#             images[i]=face_recognition.load_image_file(files[i])
-#             encodings[i]=face_recognition.face_encodings(images[i])[0]
-#
-#         known_face_encodings = encodings
-#         known_face_names = names
-#
-#         while True:
-#             ret, frame = video_capture.read()
-#             rgb_frame = frame[:, :, ::-1]
-#             face_locations = face_recognition.face_locations(rgb_frame)
-#             face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
-#
-#             for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-#                 matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-#                 name = "Unknown"
-#                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-#                 best_match_index = np.argmin(face_distances)
-#                 if matches[best_match_index]:
-#                     name = known_face_names[best_match_index]
-#                     #p = Track(name=known_face_names)
-#                     #p.save()
-#                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-#                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-#                 font = cv2.FONT_HERSHEY_DUPLEX
-#                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-#             cv2.imshow('Camera '+str(vc), frame)
-#             key = cv2.waitKey(20)
-#             if cv2.waitKey(1) & 0xFF == ord('q') or key == 27:
-#                 break
-#         video_capture.release()
-#         cv2.destroyAllWindows()
-#     except:
-#         return render(request,'track.html',{'err_msg':'Camera Ip is invalued'})
-#     return HttpResponse('<script>window.close();</script>')
-
 
 class trace_face(object):
     def __init__(self):
@@ -497,19 +396,14 @@ def gen(camera):
                     best_match_index = np.argmin(face_distances)
                     if matches[best_match_index]:
                         name = known_face_names[best_match_index]
-                        #p = Track(name=known_face_names)
-                        #p.save()
                     cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
                     cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
                     font = cv2.FONT_HERSHEY_DUPLEX
                     cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-                #cv2.imshow('Camera '+str(0), frame)
                 ret,jpeg = cv2.imencode('.jpg',frame)
                 frame=jpeg.tobytes()
                 yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-            #else:
-                # print("Server Overload")
-        print("done")
+
         camera.__del__()
         cv2.destroyAllWindows()
     except(cv2.error):
@@ -592,7 +486,6 @@ def video_detect(request):
             encodings.append(p.name+'_face_encoding')
             files.append(p.picture)
             names.append(p.name)
-
         for i in range(0,len(images)):
             images[i]=face_recognition.load_image_file(files[i])
             encodings[i]=face_recognition.face_encodings(images[i])[0]
@@ -610,8 +503,6 @@ def video_detect(request):
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = known_face_names[best_match_index]
-                    #p = Track(name=known_face_names)
-                    #p.save()
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
