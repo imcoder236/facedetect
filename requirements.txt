@@ -41,9 +41,6 @@ more-itertools==8.2.0
 mss==5.0.0
 mysqlclient==1.4.6
 numpy==1.18.1
-olefile==0.46
-opencv-contrib-python
-opencv-python
 packaging==20.3
 pbr==5.4.5
 Pillow==7.0.0
