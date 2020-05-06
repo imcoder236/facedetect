@@ -410,7 +410,14 @@
             $("#rec_tbl").html(data);
           }
         });
+        $.ajax({
+          url: '{% url "ip_record_table" %}',
+          success: function (data) {
+            $("#ip_rec_tbl").html(data);
+          }
+        });
       }, 2000);
+
     });
     </script>
     <script type="text/javascript">
