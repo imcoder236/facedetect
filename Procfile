@@ -1,1 +1,1 @@
-web: gunicorn faceDetect\wsgi.py --log-file -
+web: gunicorn faceDetect.wsgi
