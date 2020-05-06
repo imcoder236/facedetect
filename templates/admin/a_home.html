@@ -68,7 +68,7 @@
           <tbody id="rec_tbl">
             {% for r in user_detail %}
             <tr>
-              <td><center>{{r.id}}</center></td>
+              <td><center> {{ forloop.counter }}</center></td>
               <td><center>{{r.first_name}}</center></td>
               <td>
                 <center>
@@ -133,7 +133,7 @@
           <tbody id="rec_tb2">
             {% for p in user_report %}
             <tr>
-              <td nowrap><center></center></td>
+              <td nowrap><center> {{ forloop.counter }}</center></td>
               <td nowrap><center>{{p.0}}</center></td>
               <td>
                 <center>
@@ -178,7 +178,7 @@
           <tbody id="rec_tb2">
             {% for c in change_pass %}
             <tr>
-              <td nowrap><center>{{c.id}}</center></td>
+              <td nowrap><center> {{ forloop.counter }}</center></td>
               <td nowrap><center>{{c.username}}</center></td>
               <td>
                 <center>
