@@ -59,9 +59,6 @@ def email(request):
          return HttpResponse("<script>alert('Email ID mismatched. Enter correct email address to request new password'); windows.location.href('/');</script>")
     return redirect('/')
 
-def success(request):
-    return HttpResponse('successfully uploaded')
-
 def admin_login(request):
     return render(request,'admin/a_login.html')
 
