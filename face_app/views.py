@@ -144,6 +144,17 @@ def update_profile(request):
     updatepro.save()
     return redirect('/ad66cc5f7daad7a9c5b53d3a04cc3308/')
 
+def update_password(request):
+    up_pass=User.objects.get(id=request.session['id'])
+    old_pass=request.POST.get('cupass')
+    cu_user=up_pass.username
+    new_pass=request.POST.get('confpass')
+    user= authenticate(username=cu_user,password=old_pass)
+    if user:
+        up_pass.set_password(new_pass)
+        up_pass.save()
+    return HttpResponse("done")
+
 def dashboard(request):
     count_face=uploadImage.objects.count()
     count_cam=ip_address.objects.count()

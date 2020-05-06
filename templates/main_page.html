@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
     {% block customCSS %}
     {% endblock %}
   </head>
@@ -109,13 +109,21 @@
               </div>
               <a id="chngpass" href="#ChangePassword">Change Password</a>
               <div id="passdiv" style="display:none;">
-                <form target="_blank" method = "POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                <form target="_blank" method = "POST" action="{% url 'update_password' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
                   <p>
                     <div class="input-group">
                       <input type="password" class="form-control pwd" style="height:36px;" placeholder="Current Password" name="cupass" required>
                       <span class="input-group-btn">
                         <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                       </span>
+                    </div>
+                    <div class="text-center">
+                      {% if fail %}
+                        <div style="color:red;margin-left:28px;" id="admin_id_show"><b>Current Password is Wrong</b></div>
+                      {% else %}
+                        <div class="" id="admin_id_show">&nbsp;</div>
+                      {% endif %}
                     </div>
                   </p>
                   <p>
@@ -128,13 +136,13 @@
                   </p>
                   <p>
                     <div id="confdiv" class="input-group">
-                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="Confirm Password" id="confpass" name="confpass" required>
+                      <input type="password" class="form-control pwd" style="height:36px;boarder-color:red;" placeholder="Confirm Password" id="confpass" name="confpass" required>
                       <span class="input-group-btn">
                         <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                       </span>
                     </div>
                   </p>
-                  <center><button type="submit" class="btn btn-primary" name="button">Submit</button></center>
+                  <center><button type="submit" id="update_pass" class="btn btn-primary" name="button">Submit</button></center>
                 </form>
               </div>
 
@@ -184,8 +192,12 @@
           var password = $("#newpass").val();
           var confirmPassword = $("#confpass").val();
           if (password != confirmPassword){
-            //$("#confpass").css('border-color','red');
-            alert("mahesh");
+            $("#confpass").addClass('border border-danger');
+            // alert("mahesh");
+          }
+          else{
+            $("#confpass").removeClass('border border-danger');
+            $("#confpass").addClass('border border-success');
           }
         }
         $("#confpass").keyup(checkPasswordMatch);
@@ -209,6 +221,17 @@
           }
       });
 
+    </script>
+    <script type="text/javascript">
+      $( "#update_pass" ).click(function( event ) {
+        var password1 = $("#newpass").val();
+        var confirmPassword1 = $("#confpass").val();
+        if (password1 != confirmPassword1){
+          // $("#confpass").addClass('border border-danger');
+          event.preventDefault();
+          alert("Password did not match");
+        }
+        });
     </script>
   </body>
 </html>

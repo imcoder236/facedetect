@@ -59,4 +59,5 @@ urlpatterns = [
     path('update_profile/',views.update_profile,name='update_profile'),
     path('ad66cc5f7daad7a9c5b53d3a04cc3308/',views.admin_home,name='admin_home'),
     path('email/',views.email,name='email'),
+    path('update_password/',views.update_password,name='update_password'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,9 +1,10 @@
 {% extends "main_page.html" %}
 {% load staticfiles %}
 {% block customCSS %}
-<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-<link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
+<!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
 <link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
+
 <style>
   #example1_previous{
     margin-right:5px;
@@ -77,11 +78,11 @@
                 <td nowrap><center>{{r.id}}</center></td>
                 <td>
                   <center>
-                    <a href="#" id="">{{r.area}}</a>
+                    {{r.area}}
                   </center>
                 </td>
                 <td nowrap data-tooltip="true" title="Double click to edit">
-                  <center><a>{{r.ip}}</a></center>
+                  <center>{{r.ip}}</center>
                 </td>
               </tr>
             {% endfor %}

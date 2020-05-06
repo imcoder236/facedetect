@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 {% block customCSS %}
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
   <link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet" />
   <link href="{% static 'css/adminlte.min.css' %}" rel="stylesheet" />
   <style>
@@ -34,18 +34,18 @@
           {% for r in retrive_track_record%}
               <tr>
                 <td nowrap><center>{{r.id}}</center></td>
-                <td nowrap><center><a href="" id="" class="editable">{{r.name}}</a></center></td>
+                <td nowrap><center>{{r.name}}</center></td>
                 <td>
                   <center>
-                    <a href="#" id="">{{r.area}}</a>
+                  {{r.area}}
                   </center>
                 </td>
                 <td nowrap data-tooltip="true" title="Double click to edit">
-                  <center><a>{{r.ip}}</a></center>
+                  <center>{{r.ip}}</center>
                 </td>
                 <td nowrap data-tooltip="true" title="Click to view">
                   <center>
-                    <a href="#" id="">{{r.date_time}}</a>
+                    {{r.date_time}}
                   </center>
                 </td>
               </tr>
