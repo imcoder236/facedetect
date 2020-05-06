@@ -113,7 +113,7 @@
                   {% csrf_token %}
                   <p>
                     <div class="input-group">
-                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="Current Password" name="cupass" required>
+                      <input type="password" class="form-control pwd" style="height:36px;" placeholder="Current Password" id="cupass" name="cupass" required>
                       <span class="input-group-btn">
                         <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                       </span>
@@ -230,7 +230,35 @@
           event.preventDefault();
           alert("Password did not match");
         }
+        else{
+
+          $.ajax({
+            url: '{% url "update_password" %}',
+            data: {
+              'curr_pass': cupass
+            },
+            success: function (data) {
+              // $("#ip_address11").html(data);
+              alert(data);
+            }
+          });
+        }
         });
     </script>
+    <!-- <script>
+    $("#update_pass").click(function () {
+      var url = $("#areaform").attr("data-cities-url");
+      var areaid = $(this).val();
+      $.ajax({
+        url: '{% url "load_ip" %}',
+        data: {
+          'area1': areaid
+        },
+        success: function (data) {
+          $("#ip_address11").html(data);
+        }
+      });
+    });
+    </script> -->
   </body>
 </html>

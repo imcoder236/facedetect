@@ -136,14 +136,19 @@ def update_profile(request):
 
 def update_password(request):
     up_pass=User.objects.get(id=request.session['id'])
-    old_pass=request.POST.get('cupass')
+    old_pass=request.POST.get('curr_pass')
+    print(old_pass)
     cu_user=up_pass.username
     new_pass=request.POST.get('confpass')
     user= authenticate(username=cu_user,password=old_pass)
     if user:
         up_pass.set_password(new_pass)
         up_pass.save()
-    return HttpResponse("done")
+        # return HttpResponse('<script>alert("Password Changed"); window.close();</script>')
+        return HttpResponse('done')
+    else:
+        # return HttpResponse('<script>alert("Current Password does not match"); window.close();</script>')
+        return HttpResponse('error')
 
 def dashboard(request):
     count_face=uploadImage.objects.count()
