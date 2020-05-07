@@ -235,7 +235,7 @@
           $.ajax({
             url: '{% url "update_password" %}',
             data: {
-              'curr_pass': cupass
+              'curr_pass': cupasss
             },
             success: function (data) {
               // $("#ip_address11").html(data);
@@ -245,7 +245,7 @@
         }
         });
     </script>
-    <!-- <script>
+    <!-- <script>       ye dekhna lag ho raha hai
     $("#update_pass").click(function () {
       var url = $("#areaform").attr("data-cities-url");
       var areaid = $(this).val();
@@ -257,8 +257,7 @@
         success: function (data) {
           $("#ip_address11").html(data);
         }
-      });
-    });
+
     </script> -->
   </body>
 </html>
