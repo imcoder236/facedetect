@@ -79,9 +79,9 @@
           </div>
         </nav>
       <div class="container">
-        {% block body_block %}
+        <!-- {% block body_block %}
 
-        {% endblock %}
+        {% endblock %} -->
         {% if request.user_agent.is_mobile %}
           <!-- <h1>mahesh</h1> -->
         {% endif %}
@@ -145,12 +145,10 @@
                   <center><button type="submit" id="update_pass" class="btn btn-primary" name="button">Submit</button></center>
                 </form>
               </div>
-
             </div>
           </div>
         </div>
       </div>
-
     </div>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
     <script src="{% static "js/jquery.min.js" %}"></script>
@@ -193,7 +191,6 @@
           var confirmPassword = $("#confpass").val();
           if (password != confirmPassword){
             $("#confpass").addClass('border border-danger');
-            // alert("mahesh");
           }
           else{
             $("#confpass").removeClass('border border-danger');
@@ -208,9 +205,7 @@
         }
         if(window.matchMedia("(max-width: 767px)").matches){
           $("#sidebar").removeClass("active");
-        } else{
-
-        }
+        } else{}
       });
       $(".reveal").on('click',function() {
           var $pwd = $(".pwd");
@@ -220,44 +215,6 @@
               $pwd.attr('type', 'password');
           }
       });
-// jfjgjg
     </script>
-    <script type="text/javascript">
-      $( "#update_pass" ).click(function( event ) {
-        var password1 = $("#newpass").val();
-        var confirmPassword1 = $("#confpass").val();
-        if (password1 != confirmPassword1){
-          event.preventDefault();
-          alert("Password did not match");
-        }
-        else{
-
-          $.ajax({
-            url: '{% url "update_password" %}',
-            data: {
-              'curr_pass': cupasss
-            },
-            success: function (data) {
-              // $("#ip_address11").html(data);
-              alert(data);
-            }
-          });
-        }
-        });
-    </script>
-    <!-- <script>       ye dekhna lag ho raha hai
-    $("#update_pass").click(function () {
-      var url = $("#areaform").attr("data-cities-url");
-      var areaid = $(this).val();
-      $.ajax({
-        url: '{% url "load_ip" %}',
-        data: {
-          'area1': areaid
-        },
-        success: function (data) {
-          $("#ip_address11").html(data);
-        }
-
-    </script> -->
   </body>
 </html>
