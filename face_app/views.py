@@ -22,7 +22,6 @@ from .forms import *
 import face_recognition.api as face_recognition
 import base64
 from PIL import Image
-from io import BytesIO
 from django.core.files.base import ContentFile
 import datetime
 from django.core.mail import EmailMessage
@@ -238,9 +237,14 @@ def  user_login(request):
         return render(request, 'index.html', {})
 
 def logout(request):
-    users_report.objects.filter(id=request.session['user_login_id']).update(out_time= datetime.datetime.now())
-    request.session.flush()
-    return render(request,'index.html')
+    try:
+        users_report.objects.filter(id=request.session['user_login_id']).update(out_time= datetime.datetime.now())
+        request.session.flush()
+        return redirect('/')
+    except:
+        users_report.objects.filter(id=request.session['user_login_id']).update(out_time= datetime.datetime.now())
+        request.session.flush()
+        return redirect('/')
 
 def image_upload(request):
     if request.method=="POST":
@@ -470,7 +474,7 @@ def photo_detect(request):
         pil_image.show()
         return HttpResponse('<script>window.close();</script>')
     except:
-        
+
         return HttpResponse('<script>alert("Image Rendering Failed"); window.close();</script>')
 
 @gzip.gzip_page

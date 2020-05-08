@@ -3,13 +3,13 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <title>Secure Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>MN | Secure Login</title>
+  <link rel="icon" href="{% static 'images/face.png' %}" type="image/gif" >
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-  <link rel="stylesheet" href="{% static 'login/style.css' %}">
-  <link rel="stylesheet" href="{% static 'login/style1.css' %}">
+  <link rel="stylesheet" href="{% static 'login/style.css' %}">>
 </head>
 <body style="background-image: url( {% static '/images/login_back.gif' %} ); background-repeat: no-repeat;background-size:cover;">
   <img style="position:absolute;" src="{% static '/images/facial-recognition.gif' %}" />
@@ -50,7 +50,6 @@
     <div class="cta" id="cta_psd"><a id="frgtpsd" href="#Forgot">Forgot your password?</a></div>
     <div style="display:none;" id="cta_log" class="cta"><a  id="logpsd" href="">Login Form</a></div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script src="{% static 'login/style1.js' %}"></script>
   <script>
     $("#frgtpsd").click(function(){
         $("#login_form").hide();
