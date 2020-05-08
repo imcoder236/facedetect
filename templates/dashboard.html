@@ -123,6 +123,11 @@
                   <tbody id="ip_rec_tbl">
                   </tbody>
                 </table>
+                <div id="ip_load">
+                  <center>
+                    <img src="{% static 'images/load.gif' %}" class="responsive" width="100%" alt="">
+                  </center>
+                </div>
               </div>
               </div>
             </div>
@@ -140,7 +145,7 @@
             </div>
           </div>
           <div class="box-body">
-          
+
             <div style="scrollbar-width:thin;overflow-y:scroll;height:320px; width:100%" id="parentDiv" >
               <table class="table table-bordered table-striped table-hover responsive " >
                 <thead>
@@ -155,6 +160,11 @@
                 <tbody id="rec_tbl">
                 </tbody>
               </table>
+              <div id="live_load">
+                <center>
+                  <img src="{% static 'images/load.gif' %}" class="responsive" alt="">
+                </center>
+              </div>
             </div>
           </div>
         </div>
@@ -374,12 +384,14 @@
         $.ajax({
           url: '{% url "record_table" %}',
           success: function (data) {
+            $("#live_load").hide();
             $("#rec_tbl").html(data);
           }
         });
         $.ajax({
           url: '{% url "ip_record_table" %}',
           success: function (data) {
+            $("#ip_load").hide();
             $("#ip_rec_tbl").html(data);
           }
         });
