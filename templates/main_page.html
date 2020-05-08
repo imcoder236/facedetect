@@ -79,9 +79,9 @@
           </div>
         </nav>
       <div class="container">
-        <!-- {% block body_block %}
+        {% block body_block %}
 
-        {% endblock %} -->
+        {% endblock %}
         {% if request.user_agent.is_mobile %}
           <!-- <h1>mahesh</h1> -->
         {% endif %}
@@ -109,7 +109,7 @@
               </div>
               <a id="chngpass" href="#ChangePassword">Change Password</a>
               <div id="passdiv" style="display:none;">
-                <form target="_blank" method = "POST" action="{% url 'update_password' %}" enctype="multipart/form-data">
+                <form method = "POST" id="post-form">
                   {% csrf_token %}
                   <p>
                     <div class="input-group">
@@ -118,14 +118,8 @@
                         <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                       </span>
                     </div>
-                    <div class="text-center">
-                      {% if fail %}
-                        <div style="color:red;margin-left:28px;" id="admin_id_show"><b>Current Password is Wrong</b></div>
-                      {% else %}
-                        <div class="" id="admin_id_show">&nbsp;</div>
-                      {% endif %}
-                    </div>
                   </p>
+                  <div style="color:red;margin-top:8px;display:none;" id="cu_wrng_pass"><b>Current Password is Wrong.</b></div>
                   <p>
                     <div class="input-group">
                       <input type="password" class="form-control pwd" style="height:36px;" placeholder="New Password" id="newpass" name="newpass" required>
@@ -142,8 +136,14 @@
                       </span>
                     </div>
                   </p>
-                  <center><button type="submit" id="update_pass" class="btn btn-primary" name="button">Submit</button></center>
+                  <center><button type="submit" id="update_pass" class="btn btn-primary" name="button">Reset</button></center>
                 </form>
+              </div>
+              <div id="confirmdiv"  style="display:none;">
+                <p style="color:green;" >Your password has been successfully reset.</p>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                  </div>
               </div>
             </div>
           </div>
@@ -163,10 +163,27 @@
     </script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script src="{% static "js/main.js" %}" ></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     {% block customJS %}
 
     {% endblock %}
     <script>
+      $(document).on('submit', '#post-form',function(e){
+        var newpass = $("#newpass").val();
+        var oldpass = $("#cupass").val();
+        e.preventDefault()
+        $.get('/update_password', {'oldpass':oldpass,'newpass':newpass}, function(data) {
+          if(data==0){
+            $("#cu_wrng_pass").show();
+          }else{
+            $("#cu_wrng_pass").hide();
+
+            $("#passdiv").hide();
+            $("#confirmdiv").show();
+          }
+        });
+      ;
+      });
       $('#input-group').keyup(function(){
         if($("#confdiv").val() != $('#newpass').val().substr(0,$("#confpass").val().length)){
           alert('confirm password not match');

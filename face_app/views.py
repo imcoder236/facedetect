@@ -134,21 +134,39 @@ def update_profile(request):
     updatepro.save()
     return redirect('/ad66cc5f7daad7a9c5b53d3a04cc3308/')
 
+# def update_password(request):
+#     up_pass=User.objects.get(id=request.session['id'])
+#     old_pass=request.POST.get('curr_pass')
+#     print(old_pass)
+#     cu_user=up_pass.username
+#     new_pass=request.POST.get('confpass')
+#     user= authenticate(username=cu_user,password=old_pass)
+#     if user:
+#         up_pass.set_password(new_pass)
+#         up_pass.save()
+#         # return HttpResponse('<script>alert("Password Changed"); window.close();</script>')
+#         return HttpResponse('done')
+#     else:
+#         # return HttpResponse('<script>alert("Current Password does not match"); window.close();</script>')
+#         return HttpResponse('error')
+
 def update_password(request):
-    up_pass=User.objects.get(id=request.session['id'])
-    old_pass=request.POST.get('curr_pass')
-    print(old_pass)
-    cu_user=up_pass.username
-    new_pass=request.POST.get('confpass')
-    user= authenticate(username=cu_user,password=old_pass)
-    if user:
-        up_pass.set_password(new_pass)
-        up_pass.save()
-        # return HttpResponse('<script>alert("Password Changed"); window.close();</script>')
-        return HttpResponse('done')
-    else:
-        # return HttpResponse('<script>alert("Current Password does not match"); window.close();</script>')
-        return HttpResponse('error')
+    if request.method == 'GET':
+        user=User.objects.get(id=request.session['id'])
+        cur_pass1=request.GET['oldpass']
+        new_pass=request.GET['newpass']
+        username=user.username
+        us = authenticate(username=username, password=cur_pass1)
+        if us is not None:
+            user.set_password(new_pass)
+            user.save()
+            return HttpResponse(1)
+        else:
+            return HttpResponse(0)
+        # data = request.GET['mydata']
+        # astr = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % data
+
+    return render(request)
 
 def dashboard(request):
     count_face=uploadImage.objects.count()
