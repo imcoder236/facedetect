@@ -134,22 +134,6 @@ def update_profile(request):
     updatepro.save()
     return redirect('/ad66cc5f7daad7a9c5b53d3a04cc3308/')
 
-# def update_password(request):
-#     up_pass=User.objects.get(id=request.session['id'])
-#     old_pass=request.POST.get('curr_pass')
-#     print(old_pass)
-#     cu_user=up_pass.username
-#     new_pass=request.POST.get('confpass')
-#     user= authenticate(username=cu_user,password=old_pass)
-#     if user:
-#         up_pass.set_password(new_pass)
-#         up_pass.save()
-#         # return HttpResponse('<script>alert("Password Changed"); window.close();</script>')
-#         return HttpResponse('done')
-#     else:
-#         # return HttpResponse('<script>alert("Current Password does not match"); window.close();</script>')
-#         return HttpResponse('error')
-
 def update_password(request):
     if request.method == 'GET':
         user=User.objects.get(id=request.session['id'])
@@ -163,9 +147,6 @@ def update_password(request):
             return HttpResponse(1)
         else:
             return HttpResponse(0)
-        # data = request.GET['mydata']
-        # astr = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % data
-
     return render(request)
 
 def dashboard(request):
@@ -491,60 +472,6 @@ def photo_detect(request):
     except:
         print("aborted")
         return HttpResponse('<script>alert("Image Rendering Failed"); window.close();</script>')
-
-# def video_detect(request):
-#     try:
-#         if request.method == 'POST' and request.FILES['load_video']:
-#             myfile = request.FILES['load_video']
-#             fs = FileSystemStorage()
-#             filename = fs.save(myfile.name, myfile)
-#             uploaded_file_url = fs.url(filename)
-#         vc=uploaded_file_url[1:]
-#         video_capture = cv2.VideoCapture(vc)
-#         images=[]
-#         encodings=[]
-#         names=[]
-#         files=[]
-#         prsn=uploadImage.objects.all()
-#         for p in prsn:
-#             images.append(p.name+'_image')
-#             encodings.append(p.name+'_face_encoding')
-#             files.append(p.picture)
-#             names.append(p.name)
-#         for i in range(0,len(images)):
-#             images[i]=face_recognition.load_image_file(files[i])
-#             encodings[i]=face_recognition.face_encodings(images[i])[0]
-#         known_face_encodings = encodings
-#         known_face_names = names
-#         while True:
-#             ret, frame = video_capture.read()
-#             rgb_frame = frame[:, :, ::-1]
-#             face_locations = face_recognition.face_locations(rgb_frame)
-#             face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
-#             for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-#                 matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-#                 name = "Unknown"
-#                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-#                 best_match_index = np.argmin(face_distances)
-#                 if matches[best_match_index]:
-#                     name = known_face_names[best_match_index]
-#                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-#                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-#                 font = cv2.FONT_HERSHEY_DUPLEX
-#                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-#
-#             resized = cv2.resize(frame, (600, 400), interpolation = cv2.INTER_AREA)
-#             cv2.imshow('Camera '+str(vc), resized)
-#             key = cv2.waitKey(20)
-#             if cv2.waitKey(1) & 0xFF == ord('q') or key == 27:
-#                 break
-#         video_capture.release()
-#         cv2.destroyAllWindows()
-#         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#         os.remove(os.path.join(BASE_DIR,vc))
-#     except:
-#         return render(request,'dashboard.html',{'video_err_msg':'Video Error '})
-#     return HttpResponse('<script>window.close();</script>')
 
 @gzip.gzip_page
 def video_detect(request):
