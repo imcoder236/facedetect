@@ -470,7 +470,7 @@ def photo_detect(request):
         pil_image.show()
         return HttpResponse('<script>window.close();</script>')
     except:
-        print("aborted")
+        
         return HttpResponse('<script>alert("Image Rendering Failed"); window.close();</script>')
 
 @gzip.gzip_page
