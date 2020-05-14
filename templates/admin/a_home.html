@@ -171,21 +171,8 @@
               <th><center>Date</center></th>
             </tr>
           </thead>
-          <tbody id="rec_tb2">
-            {% for c in change_pass %}
-            <tr>
-              <td nowrap><center> {{ forloop.counter }}</center></td>
-              <td nowrap><center>{{c.username}}</center></td>
-              <td>
-                <center>
-                  {{c.umail}}
-                </center>
-              </td>
-              <td nowrap data-tooltip="true" title="Double click to edit">
-                <center>{{c.date}}</center>
-              </td>
-            </tr>
-            {% endfor %}
+          <tbody id="rec_tb3">
+
           </tbody>
         </table>
       </div>
@@ -368,15 +355,15 @@
       //   }
       // });
     //}, 1000);
-    // setInterval(function(){
-    //   $.ajax({
-    //     url: '{% url "users_repo" %}',
-    //     success: function (data) {
-    //       $("#rec_tb2").html(data);
-    //     }
-    //   });
-    // }, 10000);
-    $('#example4').removeClass("table-responsive");
+    setInterval(function(){
+      $.ajax({
+        url: '{% url "reset_pass" %}',
+        success: function (data) {
+          $("#rec_tb3").html(data);
+        }
+      });
+    }, 1000);
+    // $('#example4').removeClass("table-responsive");
   });
 </script>
 

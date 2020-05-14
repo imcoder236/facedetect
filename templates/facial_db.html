@@ -38,20 +38,31 @@ table, th, td {
         <h4>Facial DataBase</h4>
       </div>
       <div class="col-sm-4">
-        <div class="input-group mb-3">
-          <form action="" method="post">{% csrf_token %}
+        <form action="" method="post">{% csrf_token %}
+        <div class="input-group ">
             <!-- <input type="text" class="form-control"  id="f_search" name="f_search" value=""> -->
-            <select class="js-example-basic-single form-control"  id="f_search" name="f_search">
+            <!-- <select class="js-example-basic-single form-control" id="f_search" name="f_search">
               <option value="">Search</option>
               {% for s in face_name %}
               <option value="{{s.name}}">{{s.name}}</option>
               {% endfor %}
             </select>
-            <div class="input-group-append pull-left">
+            <div class="input-group-append pull=left">
               <button type="submit" class="input-group-text fa fa-search" name="sbutton"></button>
+            </div> -->
+            <select class="js-example-basic-single form-control" aria-describedby="validationTooltipUsernamePrepend" id="f_search" name="f_search">
+              <option value="">Search</option>
+              {% for s in face_name %}
+              <option value="{{s.name}}">{{s.name}}</option>
+              {% endfor %}
+            </select>
+            <!-- <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Username" aria-describedby="validationTooltipUsernamePrepend" required> -->
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+              <!-- <a href="#" class="btn"></a> -->
             </div>
-          </form>
         </div>
+      </form>
     </div>
     <div class="col-sm-4">
       <button type="button" class="input-group-text fa fa-plus pull-right" data-tooltip="true" title="Add Face" data-toggle="modal" data-target="#exampleModal" name="sbutton"></button>
@@ -101,6 +112,11 @@ table, th, td {
             <label for="exampleInputPassword1">Picture</label>
             <input type="file" class="form-control" id="id_picture" name="id_picture" >
           </div>
+          <!-- <div class="custom-file">
+            <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+            <div class="invalid-feedback">Example invalid custom file feedback</div>
+          </div> -->
           <button type="submit" class="btn btn-primary">Upload</button>
         </form>
         <hr>

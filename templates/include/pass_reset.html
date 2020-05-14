@@ -1,0 +1,14 @@
+{% for c in change_pass %}
+<tr>
+  <td nowrap><center> {{ forloop.counter }}</center></td>
+  <td nowrap><center>{{c.username}}</center></td>
+  <td>
+    <center>
+      {{c.umail}}
+    </center>
+  </td>
+  <td nowrap data-tooltip="true" title="Double click to edit">
+    <center>{{c.date}}</center>
+  </td>
+</tr>
+{% endfor %}

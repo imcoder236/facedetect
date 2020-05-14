@@ -40,6 +40,7 @@ urlpatterns = [
     path('ad66cc5f7daad7a9c5b53d3a04cc3308/',views.admin_home,name='admin_home'),
     path('edit_photo/',views.edit_photo,name='edit_photo'),
     path('ip_record_table/',views.ip_record_table,name='ip_record_table'),
+    path('reset_pass/',views.reset_pass,name='reset_pass'),
     path('edit_pofile/',views.edit_pofile,name='edit_pofile'),
     path('webcam/',views.webcam,name='webcam'),
     path('trace_face/',views.trace_face,name='trace_face'),

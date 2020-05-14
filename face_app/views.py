@@ -77,8 +77,8 @@ def admin_home(request):
     row = cursor.fetchall()
     user_count=User.objects.count()
     user_detail = User.objects.all()
-    change_pass = passwd.objects.all()
-    return render(request,'admin/a_home.html',{'sidebar':'true','user_count':user_count,'user_report':row,'user_detail':user_detail,'change_pass':change_pass})
+
+    return render(request,'admin/a_home.html',{'sidebar':'true','user_count':user_count,'user_report':row,'user_detail':user_detail})
 
 def admin_request(request):
     if request.method == 'POST':
@@ -162,6 +162,10 @@ def record_table(request):
 def ip_record_table(request):
     ip_records = ip_address.objects.all()
     return render(request, 'include/ipstatus.html',{'ip_add': ip_records})
+
+def reset_pass(request):
+    change_pass = passwd.objects.all()
+    return render(request, 'include/pass_reset.html',{'change_pass':change_pass})
 
 def facial_database(request):
     retrive_facial_db = uploadImage.objects.all()
