@@ -42,7 +42,7 @@ mss==5.0.0
 mysqlclient==1.4.6
 numpy==1.18.1
 olefile==0.46
-opencv-contrib-python==4.1.2.30
+opencv-contrib-python==4.2.0.32
 opencv-python==4.1.2.30
 packaging==20.3
 pbr==5.4.5
